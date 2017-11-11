@@ -10,6 +10,8 @@ JavaScript developers interested in 3D.
 
 ## Demo quick links
 
+View source in the browser to see the JavaScript.
+
 * [Scene graph demo](https://rawgit.com/LambdaSchool/3D-ThreeJS/master/examples/scenegraph/index.html)
 * [Lighting and shadows demo](https://rawgit.com/LambdaSchool/3D-ThreeJS/master/examples/lighting/index.html).
 
