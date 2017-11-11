@@ -228,7 +228,7 @@ const nearClip = 1;
 const farClip = 500;
 
 // Create the camera
-const camera = new THREE.PerspectiveCamera(fov, asp[ect, nearClip, farClip);
+const camera = new THREE.PerspectiveCamera(fov, aspect, nearClip, farClip);
 
 // Set the camera's X, Y, Z position
 camera.position.set(0, 0, 80);
