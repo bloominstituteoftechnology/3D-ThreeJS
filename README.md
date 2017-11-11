@@ -142,8 +142,7 @@ For example, the root node (that holds the whole world) might have 3
 children that are "cars". Each "car" might have 4 "wheel" children.
 
 The advantage of this kind of hierarchy is that when you move a car (by
-changing its modelview matrix), all its wheels automatically move with
-it.
+changing its model matrix), all its wheels automatically move with it.
 
 ### three.js: Scene Graph
 
