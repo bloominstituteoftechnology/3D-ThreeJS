@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Scene Graph Demo</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="../lib/three.js"></script>
+		<script>
+			// Helper function to make a checkerboard
+			// https://gist.github.com/bhollis/7686441
+			function makeCheckerboard(segments=12) {
+				const geometry = new THREE.PlaneGeometry(150, 150, segments, segments);
+
+				const shininess = 200;
+				const specular = 0x050505;
+
+				const materialEven = new THREE.MeshPhongMaterial({
+					color: 0xcccccc, // intrinsic color
+					shininess: shininess, // how shiny
+					specular: specular // highlight color
+				});
+				const materialOdd = new THREE.MeshPhongMaterial({
+					color: 0x444444,
+					shininess: shininess,
+					specular: specular
+				});
+				const materials = [materialEven, materialOdd];
+
+				for (let x = 0; x < segments; x++) {
+					for (let y = 0; y < segments; y++) {
+						const i = x * segments + y;
+						const j = 2 * i;
+						geometry.faces[j].materialIndex =
+							geometry.faces[j+1].materialIndex =
+							(x + y) % 2;
+					}
+				}
+
+				const mesh = new THREE.Mesh(geometry, materials);
+				mesh.rotation.x = -Math.PI/2;
+
+				return mesh;
+			}
+
+			// Helper function to make a crate
+			function makeCrate(size) {
+				const cubeGeometry = new THREE.BoxGeometry(size, size, size);
+				const crateTexture = new THREE.TextureLoader().load('../img/crate.jpg');
+				const cubeMaterial = new THREE.MeshPhongMaterial({
+					shininess: 0, 
+					specular: 0x111111,
+					map: crateTexture
+				});
+
+				return new THREE.Mesh(cubeGeometry, cubeMaterial);
+			}
+
+			// Initialize the camera
+			const camera = new THREE.PerspectiveCamera(45, window.innerWidth/ window.innerHeight, 1, 500);
+
+			camera.position.set(0, 100, 180);
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+			// New renderer
+			const renderer = new THREE.WebGLRenderer();
+			renderer.shadowMap.enabled = true; // ENABLE SHADOWS
+
+			// Set up the size of the window and add to DOM
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			// Create the scene graph (empty)
+			const scene = new THREE.Scene();
+
+			// Make plane
+			const plane = makeCheckerboard();
+			plane.receiveShadow = true; // MAKE THE PLANE RECEIVE SHADOWS
+			scene.add(plane);
+
+			// Make a crate to rotate
+			const crate = makeCrate(20);
+			scene.add(crate);
+			crate.position.y = 30;
+			crate.castShadow = true; // MAKE THE CRATE CAST SHADOWS
+
+			// Add a light source holder
+			// We do this to make rotation easier in the animation loop.
+			// By offsetting the light instead the holder, we just need
+			// to rotate the holder to move the light in a circle.
+			const lightHolder = new THREE.Object3D();
+			scene.add(lightHolder);
+
+			// Add a light source
+			const light = new THREE.PointLight(0xffffffff, 1, 0, 1);
+			light.position.y = 60;
+			light.position.x = 40;
+			light.castShadow = true; // CAST SHADOWS
+			lightHolder.add(light); // Add to the lightHolder
+
+			// This will draw a dot where the light actually is, helps
+			// with debugging
+			const pointLightHelper = new THREE.PointLightHelper(light, 0.5);
+			scene.add( pointLightHelper );
+
+			// Add an ambient light to the scene. Without this,
+			// everything in shadow would be pitch black.
+			const ambientLight = new THREE.AmbientLight( 0x222222 ); // soft white light
+			scene.add(ambientLight);
+
+			// Animate
+			function animate() {
+				requestAnimationFrame(animate);
+
+				// Rotate crate
+				crate.rotation.x += 0.05;
+				crate.rotation.y += 0.05;
+
+				// Move light
+				lightHolder.rotation.y += 0.01;
+
+				renderer.render(scene, camera);
+			}
+
+			animate();
+		</script>
+	</body>
+</html>

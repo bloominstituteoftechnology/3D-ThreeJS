@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Scene Graph Demo</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="../lib/three.js"></script>
+		<script>
+			// Helper function to make a crate
+			function makeCrate(size) {
+				const cubeGeometry = new THREE.BoxGeometry(size, size, size);
+				const crateTexture = new THREE.TextureLoader().load('../img/crate.jpg');
+				const cubeMaterial = new THREE.MeshBasicMaterial({ map: crateTexture });
+
+				return new THREE.Mesh(cubeGeometry, cubeMaterial);
+			}
+
+			// Initialize the camera
+			const camera = new THREE.PerspectiveCamera(45, window.innerWidth/ window.innerHeight, 1, 500);
+
+			camera.position.set(0, 0, 80);
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+			// New renderer
+			const renderer = new THREE.WebGLRenderer();
+
+			// Set up the size of the window and add to DOM
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			// Create the scene graph (empty)
+			const scene = new THREE.Scene();
+
+			// Make a crate
+			const crate1 = makeCrate(5); // bigger crate
+			const crate2 = makeCrate(2); // smaller crate
+
+			// Add crate2 as a child on crate1:
+			crate1.add(crate2);
+
+			// Move crate2 out a bit so it's not inside crate1. This
+			// tacks it on to the corner of the 5x5x5 crate1:
+			crate2.position.set(2.5, 2.5, 2.5)
+
+			// And add crate1 as a child to the scene root:
+			scene.add(crate1);
+
+			// Animate the crates
+			// This animates both because crate2 is a child of crate1
+			function animate() {
+				requestAnimationFrame(animate);
+				crate1.rotation.x += 0.05;
+				crate1.rotation.y += 0.05;
+				renderer.render(scene, camera);
+			}
+
+			animate();
+		</script>
+	</body>
+</html>
