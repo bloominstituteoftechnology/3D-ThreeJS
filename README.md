@@ -10,8 +10,8 @@ JavaScript developers interested in 3D.
 
 ## Demo quick links
 
-* [Scene graph](examples/scenegraph/index.html)
-* [Lighting and shadows](examples/lighting/index.html).
+* [Scene graph demo](https://rawgit.com/LambdaSchool/3D-ThreeJS/master/examples/scenegraph/index.html)
+* [Lighting and shadows demo](https://rawgit.com/LambdaSchool/3D-ThreeJS/master/examples/lighting/index.html).
 
 These are elaborated on further below.
 
@@ -189,7 +189,7 @@ for (let i = 0; i < 10; i++) {
 cars[0].position.set(20, 30, 40);
 ```
 
-[Running example with two connected crates](examples/scenegraph/index.html)
+* [Scene graph demo](https://rawgit.com/LambdaSchool/3D-ThreeJS/master/examples/scenegraph/index.html)
 
 
 ## Camera and viewport
@@ -417,8 +417,7 @@ The steps are:
 	scene.add(ambientLight);
 	```
 
-[Running example of lighting and shadows](examples/lighting/index.html).
-
+* [Lighting and shadows demo](https://rawgit.com/LambdaSchool/3D-ThreeJS/master/examples/lighting/index.html).
 
 ## Shaders
 
