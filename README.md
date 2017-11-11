@@ -349,6 +349,8 @@ infinitely far away, like the Sun.
 
 *Spot Lights*: Cast a cone of light from a specific point.
 
+*Ambient Lights*: Add a light colored uniformly everywhere in the scene.
+
 (There are more, but these are common.)
 
 You can have multiple lights of different types in a scene.
